@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nano Banana Builder 2.1</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Inter:wght@300;400;600&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            background-image: radial-gradient(circle at 50% 0%, #1a1a1a 0%, #0a0a0a 100%);
+            color: #e0e0e0;
+        }
+
+        h1, h2, .label-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .glass-panel {
+            background: rgba(20, 20, 20, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+        }
+
+        .banana-gradient {
+            background: linear-gradient(135deg, #ffe135 0%, #facc15 100%);
+        }
+
+        .input-field {
+            background-color: #151515;
+            border: 1px solid #333;
+            transition: all 0.2s ease;
+        }
+
+        .input-field:focus {
+            border-color: #facc15;
+            outline: none;
+            background-color: #1a1a1a;
+            box-shadow: 0 0 0 1px rgba(250, 204, 21, 0.3);
+        }
+
+        /* Style Cards */
+        .style-card {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid #333;
+        }
+        .style-card:hover {
+            background-color: #252525;
+            border-color: #555;
+            transform: translateY(-2px);
+        }
+        .style-card.active {
+            background-color: rgba(250, 204, 21, 0.1);
+            border-color: #facc15;
+        }
+        .style-card.active i {
+            color: #facc15;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 lg:p-8">
+
+    <div class="max-w-6xl w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Left Column: Builder (8 cols) -->
+        <div class="lg:col-span-7 flex flex-col gap-6">
+            
+            <!-- Header -->
+            <div class="glass-panel rounded-2xl p-6 flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 banana-gradient rounded-xl flex items-center justify-center text-black font-bold text-2xl shadow-lg shadow-yellow-500/20">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-white">Nano Banana <span class="text-yellow-400 text-sm font-normal align-top">v2.1</span></h1>
+                        <p class="text-xs text-gray-400">Gerador de Prompt Unificado</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Form -->
+            <div class="glass-panel rounded-2xl p-6 md:p-8 flex flex-col gap-6">
+                
+                <!-- 1. Style Selection -->
+                <div>
+                    <label class="block text-xs font-bold text-yellow-400 mb-3 uppercase tracking-widest label-font"><i class="fas fa-palette mr-2"></i>1. Escolha o Estilo</label>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <!-- Realistic -->
+                        <div onclick="selectStyle(this, 'realistic')" class="style-card active rounded-lg p-3 flex flex-col items-center justify-center gap-2 bg-gray-900/50">
+                            <i class="fas fa-camera text-xl text-gray-400"></i>
+                            <span class="text-xs font-semibold">Realista</span>
+                        </div>
+                        <!-- Anime -->
+                        <div onclick="selectStyle(this, 'anime')" class="style-card rounded-lg p-3 flex flex-col items-center justify-center gap-2 bg-gray-900/50">
+                            <i class="fas fa-fire text-xl text-gray-400"></i>
+                            <span class="text-xs font-semibold">Anime</span>
+                        </div>
+                        <!-- 3D Cartoon -->
+                        <div onclick="selectStyle(this, '3d')" class="style-card rounded-lg p-3 flex flex-col items-center justify-center gap-2 bg-gray-900/50">
+                            <i class="fas fa-cubes text-xl text-gray-400"></i>
+                            <span class="text-xs font-semibold">3D Pixar</span>
+                        </div>
+                         <!-- Cyberpunk -->
+                         <div onclick="selectStyle(this, 'cyberpunk')" class="style-card rounded-lg p-3 flex flex-col items-center justify-center gap-2 bg-gray-900/50">
+                            <i class="fas fa-robot text-xl text-gray-400"></i>
+                            <span class="text-xs font-semibold">Cyberpunk</span>
+                        </div>
+                        <!-- Claymation -->
+                        <div onclick="selectStyle(this, 'clay')" class="style-card rounded-lg p-3 flex flex-col items-center justify-center gap-2 bg-gray-900/50">
+                            <i class="fas fa-hand-rock text-xl text-gray-400"></i>
+                            <span class="text-xs font-semibold">Massinha</span>
+                        </div>
+                        <!-- Oil Painting -->
+                        <div onclick="selectStyle(this, 'painting')" class="style-card rounded-lg p-3 flex flex-col items-center justify-center gap-2 bg-gray-900/50">
+                            <i class="fas fa-brush text-xl text-gray-400"></i>
+                            <span class="text-xs font-semibold">Pintura a Óleo</span>
+                        </div>
+                        <!-- Pixel Art -->
+                        <div onclick="selectStyle(this, 'pixel')" class="style-card rounded-lg p-3 flex flex-col items-center justify-center gap-2 bg-gray-900/50">
+                            <i class="fas fa-gamepad text-xl text-gray-400"></i>
+                            <span class="text-xs font-semibold">Pixel Art</span>
+                        </div>
+                         <!-- Noir -->
+                         <div onclick="selectStyle(this, 'noir')" class="style-card rounded-lg p-3 flex flex-col items-center justify-center gap-2 bg-gray-900/50">
+                            <i class="fas fa-user-secret text-xl text-gray-400"></i>
+                            <span class="text-xs font-semibold">Noir P&B</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Core Idea -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-bold text-yellow-400 mb-2 uppercase tracking-widest label-font">2. O que você quer criar?</label>
+                        <textarea id="mainIdea" rows="2" class="input-field w-full rounded-lg p-4 text-gray-200 placeholder-gray-600" placeholder="Ex: Um gato astronauta... (Inglês recomendado)"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 mb-2 uppercase tracking-widest">Cenário</label>
+                        <input type="text" id="environment" class="input-field w-full rounded-lg p-3 text-gray-200 placeholder-gray-600" placeholder="Ex: Marte, Floresta...">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 mb-2 uppercase tracking-widest">Ação / Pose</label>
+                        <input type="text" id="action" class="input-field w-full rounded-lg p-3 text-gray-200 placeholder-gray-600" placeholder="Ex: Correndo, Flutuando...">
+                    </div>
+                </div>
+
+                <!-- 3. Tech & Boosters -->
+                <div class="border-t border-gray-800 pt-4">
+                    <div class="flex justify-between items-center mb-3 cursor-pointer" onclick="document.getElementById('advancedOptions').classList.toggle('hidden')">
+                        <label class="text-xs font-bold text-gray-400 uppercase tracking-widest label-font"><i class="fas fa-sliders-h mr-2"></i>Ajustes Finos (Opcional)</label>
+                        <i class="fas fa-chevron-down text-gray-600 text-xs"></i>
+                    </div>
+                    
+                    <div id="advancedOptions" class="grid grid-cols-1 md:grid-cols-2 gap-4 hidden">
+                        <div>
+                            <label class="block text-xs text-gray-500 mb-1">Iluminação</label>
+                            <select id="lighting" class="input-field w-full rounded p-2 text-xs text-gray-300">
+                                <option value="">Automático (Pelo Estilo)</option>
+                                <option value="cinematic lighting">Cinematic</option>
+                                <option value="golden hour sun lighting">Golden Hour</option>
+                                <option value="soft studio lighting">Studio Softbox</option>
+                                <option value="neon cyberpunk lights">Neon</option>
+                                <option value="dark moody atmosphere">Dark Moody</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs text-gray-500 mb-1">Ângulo</label>
+                            <select id="camera" class="input-field w-full rounded p-2 text-xs text-gray-300">
+                                <option value="">Automático</option>
+                                <option value="wide angle view">Wide Angle</option>
+                                <option value="extreme close-up">Macro Close-up</option>
+                                <option value="aerial drone view">Drone View</option>
+                                <option value="low angle shot">Low Angle (Heroico)</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-xs text-gray-500 mb-2">Boosters</label>
+                            <div class="flex flex-wrap gap-2">
+                                <button onclick="toggleBooster(this)" data-val="8k resolution" class="px-3 py-1 rounded border border-gray-700 text-xs hover:border-yellow-500 transition text-gray-400">8k</button>
+                                <button onclick="toggleBooster(this)" data-val="highly detailed" class="px-3 py-1 rounded border border-gray-700 text-xs hover:border-yellow-500 transition text-gray-400">Detalhes</button>
+                                <button onclick="toggleBooster(this)" data-val="HDR" class="px-3 py-1 rounded border border-gray-700 text-xs hover:border-yellow-500 transition text-gray-400">HDR</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="generatePrompt()" class="w-full banana-gradient hover:bg-yellow-400 text-black font-bold py-4 px-6 rounded-xl shadow-lg shadow-yellow-500/20 transform active:scale-[0.98] transition-all flex items-center justify-center gap-2 text-lg">
+                    <i class="fas fa-magic"></i> GERAR AGORA
+                </button>
+            </div>
+        </div>
+
+        <!-- Right Column: Output (4 cols) -->
+        <div class="lg:col-span-5 flex flex-col h-full">
+            
+            <!-- Unified Output -->
+            <div class="glass-panel rounded-2xl p-6 flex flex-col h-full border-l-4 border-l-yellow-500">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-sm font-bold text-yellow-500 uppercase tracking-wider"><i class="fas fa-code mr-2"></i>Prompt Final</h2>
+                    <button onclick="copyToClipboard('finalOutput', this)" class="text-xs bg-gray-800 hover:bg-gray-700 px-4 py-2 rounded-lg text-white transition flex items-center gap-2 border border-gray-700 font-bold">
+                        <i class="far fa-copy"></i> COPIAR TUDO
+                    </button>
+                </div>
+                
+                <div class="relative flex-grow">
+                    <textarea id="finalOutput" readonly class="w-full h-[500px] lg:h-full bg-[#0f0f0f] border border-gray-800 rounded-lg p-5 text-sm text-gray-300 font-mono resize-none focus:outline-none leading-relaxed" placeholder="Seu prompt completo aparecerá aqui..."></textarea>
+                    
+                    <!-- Status Indicator -->
+                    <div id="statusMsg" class="absolute bottom-4 right-4 text-xs text-green-500 opacity-0 transition-opacity">
+                        <i class="fas fa-check-circle"></i> Prompt Pronto
+                    </div>
+                </div>
+                
+                <p class="text-xs text-gray-500 mt-3 text-center">
+                    Copie e cole diretamente no seu gerador de imagens.
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // === CONFIGURATION ===
+        const stylePresets = {
+            'realistic': {
+                prefix: "(ultra-realistic:1.6), (photorealistic:1.5), (masterpiece:1.4), raw photo",
+                defaultTech: "shot on 35mm lens, f/1.8, sharp focus"
+            },
+            'anime': {
+                prefix: "(anime style:1.6), (studio ghibli style:1.4), (vibrant colors:1.2), 2D flat, highly detailed",
+                defaultTech: "digital art, cel shaded, 4k"
+            },
+            '3d': {
+                prefix: "(3d cartoon:1.6), (pixar style:1.5), (disney style:1.4), (cute:1.2), cgsociety, 3d render, unreal engine 5",
+                defaultTech: "octane render, volumetric lighting, 3d model"
+            },
+            'clay': {
+                prefix: "(claymation:1.6), (stop motion:1.5), (play-doh texture:1.4), handmade, tactile texture",
+                defaultTech: "macro photography, tilt-shift effect"
+            },
+            'cyberpunk': {
+                prefix: "(cyberpunk style:1.6), (futuristic:1.4), (neon glow:1.3), sci-fi aesthetic",
+                defaultTech: "chromatic aberration, neon lighting"
+            },
+            'painting': {
+                prefix: "(oil painting:1.6), (impasto:1.4), (brush strokes:1.3), classic art style, canvas texture",
+                defaultTech: "intricate details, artistic composition"
+            },
+            'pixel': {
+                prefix: "(pixel art:1.6), (16-bit:1.5), (retro game:1.3), sprite sheet style",
+                defaultTech: "pixelated, low res aesthetics"
+            },
+            'noir': {
+                prefix: "(film noir:1.6), (black and white:1.7), (dramatic shadows:1.5), vintage aesthetic, grainy",
+                defaultTech: "high contrast, monochrome"
+            }
+        };
+
+        // Default Negatives
+        const defaultNegative = "Negative prompt: no text, no watermark, no camera brand, no logos, no extra people, no distortion, no blurriness, bad anatomy, extra limbs, deformed, ugly, low quality, pixelated, grainy.";
+
+        let activeBoosters = [];
+        let currentStyle = 'realistic';
+
+        // === FUNCTIONS ===
+
+        function selectStyle(element, styleKey) {
+            document.querySelectorAll('.style-card').forEach(card => {
+                card.classList.remove('active');
+                card.querySelector('i').classList.remove('text-yellow-400');
+                card.querySelector('i').classList.add('text-gray-400');
+            });
+            
+            element.classList.add('active');
+            element.querySelector('i').classList.remove('text-gray-400');
+            element.querySelector('i').classList.add('text-yellow-400');
+            currentStyle = styleKey;
+        }
+
+        function toggleBooster(btn) {
+            const val = btn.getAttribute('data-val');
+            if (activeBoosters.includes(val)) {
+                activeBoosters = activeBoosters.filter(item => item !== val);
+                btn.classList.remove('bg-yellow-500', 'text-black', 'border-yellow-500');
+                btn.classList.add('text-gray-400', 'border-gray-700');
+            } else {
+                activeBoosters.push(val);
+                btn.classList.remove('text-gray-400', 'border-gray-700');
+                btn.classList.add('bg-yellow-500', 'text-black', 'border-yellow-500');
+            }
+        }
+
+        function generatePrompt() {
+            const mainIdea = document.getElementById('mainIdea').value.trim();
+            const environment = document.getElementById('environment').value.trim();
+            const action = document.getElementById('action').value.trim();
+            const manualLighting = document.getElementById('lighting').value;
+            const manualCamera = document.getElementById('camera').value;
+
+            if (!mainIdea) {
+                document.getElementById('mainIdea').focus();
+                document.getElementById('mainIdea').style.borderColor = 'red';
+                setTimeout(() => document.getElementById('mainIdea').style.borderColor = '#333', 2000);
+                return;
+            }
+
+            // 1. Construction
+            const styleData = stylePresets[currentStyle];
+            let fullDescription = mainIdea;
+            if (action) fullDescription += `, ${action}`;
+            if (environment) fullDescription += `, in ${environment}`;
+
+            const finalCamera = manualCamera ? manualCamera : styleData.defaultTech;
+            const techStack = [manualLighting, finalCamera, ...activeBoosters].filter(Boolean);
+            const techString = techStack.join(", ");
+
+            const positivePart = `${styleData.prefix}, ${fullDescription}, ${techString}.`;
+
+            // 2. Combine with Negatives
+            const finalFullText = `${positivePart}\n\n${defaultNegative}`;
+
+            // 3. Output
+            const outputArea = document.getElementById('finalOutput');
+            outputArea.value = finalFullText;
+            
+            // Visual Feedback
+            outputArea.style.backgroundColor = 'rgba(250, 204, 21, 0.05)';
+            document.getElementById('statusMsg').style.opacity = '1';
+            setTimeout(() => {
+                outputArea.style.backgroundColor = '#0f0f0f';
+                document.getElementById('statusMsg').style.opacity = '0';
+            }, 1000);
+        }
+
+        function copyToClipboard(elementId, btnElement) {
+            const copyText = document.getElementById(elementId);
+            
+            if(!copyText.value) return;
+
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            
+            try {
+                document.execCommand('copy');
+                const originalHTML = btnElement.innerHTML;
+                btnElement.innerHTML = '<i class="fas fa-check"></i> COPIADO!';
+                btnElement.classList.remove('bg-gray-800', 'border-gray-700');
+                btnElement.classList.add('bg-yellow-500', 'text-black', 'border-yellow-500');
+                
+                setTimeout(() => {
+                    btnElement.innerHTML = originalHTML;
+                    btnElement.classList.remove('bg-yellow-500', 'text-black', 'border-yellow-500');
+                    btnElement.classList.add('bg-gray-800', 'border-gray-700');
+                }, 1500);
+            } catch (err) {
+                alert("Erro ao copiar.");
+            }
+        }
+    </script>
+</body>
+</html>
+
+
